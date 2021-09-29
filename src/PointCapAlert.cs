@@ -4,11 +4,11 @@ using Chatting;
 using Assets.ColonyPointUpgrades;
 using Assets.ColonyPointUpgrades.Implementations;
 
-namespace AutoPoints {
+namespace PointCapAlert {
 
-	public static class AutoPoints
+	public static class PointCapAlert
 	{
-		public const string NAMESPACE = "AutoPoints";
+		public const string NAMESPACE = "PointCapAlert";
 		public const float CHECK_INTERVAL = 12.5f;
 		public static string MOD_DIRECTORY;
 		public static InterfaceManager interfaceClass = new InterfaceManager();
@@ -19,7 +19,7 @@ namespace AutoPoints {
 		public static void AssemblyLoaded(string path)
 		{
 			MOD_DIRECTORY = Path.GetDirectoryName(path);
-			Log.Write("Loaded AutoPoints");
+			Log.Write("Loaded PointCapAlert");
 		}
 
 		public static void WorldStarted()

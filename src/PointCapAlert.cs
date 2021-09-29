@@ -56,10 +56,9 @@ namespace PointCapAlert {
 			if (lvlCapacity < upgradeCapacity.LevelCount) {
 				long costCapacity = upgradeCapacity.GetUpgradeCost(lvlCapacity);
 				if (colony.ColonyPoints >= costCapacity) {
-					long? current = upgradeCapacity.Levels[lvlCapacity].capacity;
 					foreach (Players.Player owner in colony.Owners) {
 						if (owner.ConnectionState == Players.EConnectionState.Connected) {
-							Chat.Send("{colony.Name} has reached maximum point capacity.");
+							Chat.Send("{colony.Name} has reached maximum point capacity of {colony.ColonyPoints}.");
 						}
 					}	
 				}

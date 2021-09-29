@@ -26,9 +26,7 @@ namespace PointCapAlert {
 		{
 			IUpgrade iUpgradeCapacity, iUpgradeEfficiency;
 			ServerManager.UpgradeManager.TryGetKeyUpgrade("pipliz.colonypointcap", out keyCapacity, out iUpgradeCapacity);
-			ServerManager.UpgradeManager.TryGetKeyUpgrade("pipliz.pointmultiplier", out keyEfficiency, out iUpgradeEfficiency);
 			upgradeCapacity = (ColonyPointCapacityUpgrade) iUpgradeCapacity;
-			upgradeEfficiency = (ColonyPointMultiplierUpgrade) iUpgradeEfficiency;
 
 			ThreadManager.InvokeOnMainThread(delegate() {
 				CheckColonies();
@@ -43,8 +41,7 @@ namespace PointCapAlert {
 					continue;
 				}
 
-				CheckAndPerformEfficiencyUpgrade(colony);
-				CheckAndPerformCapacityUpgrade(colony);
+				CheckCapacity(colony);
 			}
 
 			// queue self again
@@ -53,25 +50,7 @@ namespace PointCapAlert {
 			}, CHECK_INTERVAL);
 		}
 
-		public static void CheckAndPerformEfficiencyUpgrade(Colony colony)
-		{
-			int lvlEfficiency = colony.UpgradeState.GetUnlockedLevels(keyEfficiency);
-			if (lvlEfficiency < upgradeEfficiency.LevelCount) {
-				long costEfficiency = upgradeEfficiency.GetUpgradeCost(lvlEfficiency);
-
-				if (colony.ColonyPoints >= costEfficiency) {
-					long? current = ColonyPointMultiplierUpgrade.GetCapacity(upgradeEfficiency.Levels, lvlEfficiency, 0);
-					foreach (Players.Player owner in colony.Owners) {
-						if (owner.ConnectionState == Players.EConnectionState.Connected) {
-							Chat.Send(owner, $"Upgraded {colony.Name} points efficiency to {current + 100}%");
-						}
-					}
-					colony.UpgradeState.TryUnlock(colony, keyEfficiency, lvlEfficiency);
-				}
-			}
-		}
-
-		public static void CheckAndPerformCapacityUpgrade(Colony colony)
+		public static void CheckCapacity(Colony colony)
 		{
 			int lvlCapacity = colony.UpgradeState.GetUnlockedLevels(keyCapacity);
 			if (lvlCapacity < upgradeCapacity.LevelCount) {
@@ -80,10 +59,12 @@ namespace PointCapAlert {
 					long? current = upgradeCapacity.Levels[lvlCapacity].capacity;
 					foreach (Players.Player owner in colony.Owners) {
 						if (owner.ConnectionState == Players.EConnectionState.Connected) {
-							Chat.Send(owner, $"Upgraded {colony.Name} max point capacity to {current:N0}");
+							Chat.Send("{colony.Name} has reached maximum point capacity.");
 						}
-					}
-					colony.UpgradeState.TryUnlock(colony, keyCapacity, lvlCapacity);
+					}	
+				}
+				while (colony.ColonyPoints >= costCapacity) {
+					Sleep((Int32)(CHECK_INTERVAL*1000))	// Spin while at max point capacity.
 				}
 			}
 		}

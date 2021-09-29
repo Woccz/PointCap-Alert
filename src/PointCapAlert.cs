@@ -27,6 +27,8 @@ namespace PointCapAlert {
 			IUpgrade iUpgradeCapacity, iUpgradeEfficiency;
 			ServerManager.UpgradeManager.TryGetKeyUpgrade("pipliz.colonypointcap", out keyCapacity, out iUpgradeCapacity);
 			upgradeCapacity = (ColonyPointCapacityUpgrade) iUpgradeCapacity;
+			
+			Chat.Send("Testing: Mod ONLINE.");
 
 			ThreadManager.InvokeOnMainThread(delegate() {
 				CheckColonies();

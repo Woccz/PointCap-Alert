@@ -1,6 +1,6 @@
 using ModLoaderInterfaces;
 
-namespace AutoPoints {
+namespace PointCapAlert {
 
 	public class InterfaceManager:
 		IOnAssemblyLoaded,
@@ -8,12 +8,12 @@ namespace AutoPoints {
 	{
 		public void OnAssemblyLoaded(string path)
 		{
-			AutoPoints.AssemblyLoaded(path);
+			PointCapAlert.AssemblyLoaded(path);
 		}
 
 		public void AfterWorldLoad()
 		{
-			AutoPoints.WorldStarted();
+			PointCapAlert.WorldStarted();
 		}
 
 	}

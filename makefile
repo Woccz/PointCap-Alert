@@ -1,5 +1,5 @@
 # variables
-modname = AutoPoints
+modname = PointCap-Alert
 dllname = $(modname).dll
 version = $(shell cat modInfo.json | awk '/"version"/ {print $$3}' | head -1 | sed 's/[",]//g')
 zipname = $(modname)-$(version).zip
